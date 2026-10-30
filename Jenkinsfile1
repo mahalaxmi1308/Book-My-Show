@@ -20,7 +20,7 @@ pipeline {
                 sh 'ls -la'  // Verify files after checkout
             }
         }
-        //stage('SonarQube Analysis') {
+        /*stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
                     sh ''' 
@@ -36,7 +36,7 @@ pipeline {
                     waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
                 }
             }
-        }
+        }*/
         stage('Install Dependencies') {
             steps {
                 sh '''
@@ -98,7 +98,7 @@ pipeline {
             }
         }
     }
-   // post {
+   /* post {
         always {
             emailext attachLog: true,
                 subject: "'${currentBuild.result}'",
@@ -108,5 +108,5 @@ pipeline {
                 to: 'mahalaxmikaranam@gmail.com',
                 attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
         }
-    }
+    }/*
 }
