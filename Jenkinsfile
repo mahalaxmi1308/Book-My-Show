@@ -56,7 +56,7 @@ pipeline {
                 // IAM రోల్ ద్వారా EKS కి లాగిన్ అవ్వడం
                 sh "aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
                 // కుబర్నెటీస్ ఫైల్ ని అప్లై చేయడం
-                sh "kubectl apply -f deployment.yaml"
+                sh "kubectl apply -f Book-My-show/deployment.yaml"
             }
         }
     }
