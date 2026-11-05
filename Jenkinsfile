@@ -1,34 +1,45 @@
 pipeline {
     agent any
+    tools {
+        // Jenkins లో మీరు ఏ పేరుతో అయితే NodeJS టూల్ ని add చేశారో ఆ పేరు ఇవ్వండి
+        nodejs 'node23' 
+    }
     
     environment {
         AWS_REGION = "ap-southeast-2"
         
         // మార్చాలి: మీ 12 అంకెల AWS అకౌంట్ ఐడీ ఇక్కడ ఇవ్వండి
-        AWS_ACCOUNT_ID = "123456789012" 
+        AWS_ACCOUNT_ID = "232723758111" 
         
-        ECR_REPO = "bookmyshow"
+        ECR_REPO = "bms-ecr"
         CLUSTER_NAME = "bookmyshow-cluster"
         
         // మార్చాలి: మీ గిట్‌హబ్ క్రెడెన్షియల్స్ ఐడీ మరియు మీ రిపో లింక్ ఇవ్వండి
-        GIT_CRED_ID = "github-creds"
-        GIT_URL = "https://github.com/your_username/bookmyshow.git"
+        GIT_CRED_ID = "git-cred"
+        GIT_URL = "https://github.com/mahalaxmi1308/Book-My-Show.git"
         
         // ECR పూర్తి లింక్ ఆటోమేటిక్ గా క్రియేట్ అవుతుంది
-        IMAGE_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest"
+        IMAGE_URI = "232723758111.dkr.ecr.ap-southeast-2.amazonaws.com/bms-ecr"
     }
     
     stages {
         stage('Checkout Code') {
             steps {
                 // ఇక్కడ మీ గిట్ క్రెడెన్షియల్స్ ఆటోమేటిక్ గా వాడబడతాయి
-                git branch: 'main', credentialsId: "${GIT_CRED_ID}", url: "${GIT_URL}"
+                git branch: 'eks-pipeline', credentialsId: "${GIT_CRED_ID}", url: "${GIT_URL}"
             }
         }
+       stage('Install Node Dependencies') {
+    steps {
+        dir('bookmyshow-app') {
+            sh 'npm install'
+        }
+    }
+}
         
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${IMAGE_URI} ."
+                sh "docker build -t ${IMAGE_URI} ./bookmyshow-app"
             }
         }
         
@@ -45,7 +56,7 @@ pipeline {
                 // IAM రోల్ ద్వారా EKS కి లాగిన్ అవ్వడం
                 sh "aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
                 // కుబర్నెటీస్ ఫైల్ ని అప్లై చేయడం
-                sh "kubectl apply -f k8s-deployment.yaml"
+                sh "kubectl apply -f bookmyshow-app/deployment.yaml"
             }
         }
     }
