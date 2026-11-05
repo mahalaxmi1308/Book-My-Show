@@ -29,6 +29,7 @@ pipeline {
                 git branch: 'eks-pipeline', credentialsId: "${GIT_CRED_ID}", url: "${GIT_URL}"
             }
         }
+    
        stage('Install Node Dependencies') {
     steps {
         dir('bookmyshow-app') {
@@ -50,6 +51,7 @@ pipeline {
                 sh "docker push ${IMAGE_URI}"
             }
         }
+    
         
        stage('Deploy to EKS') {
             steps {
