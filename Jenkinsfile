@@ -51,13 +51,16 @@ pipeline {
             }
         }
         
-        stage('Deploy to EKS') {
+       stage('Deploy to EKS') {
             steps {
-                // IAM రోల్ ద్వారా EKS కి లాగిన్ అవ్వడం
+                // IAM రోల్ ద్వారా AWS కి లాగిన్ అవ్వడం
                 sh "aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
-                // కుబర్నెటీస్ ఫైల్ ని అప్లై చేయడం
+                
+                // ఇక్కడ ఈ కొత్త లైన్ యాడ్ చేయండి (ఇది ఫైల్స్ లిస్ట్‌ని ప్రింట్ చేస్తుంది):
+                sh "ls -la" 
+                
+                // కుబెర్నెటీస్ లో డిప్లాయ్ చేయడం
                 sh "kubectl apply -f deployment.yml"
             }
-        }
-    }
+        } 
 }
