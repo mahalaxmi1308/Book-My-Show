@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools {
+        // Jenkins లో మీరు ఏ పేరుతో అయితే NodeJS టూల్ ని add చేశారో ఆ పేరు ఇవ్వండి
+        nodejs 'node23' 
+    }
     
     environment {
         AWS_REGION = "ap-southeast-2"
