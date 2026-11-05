@@ -25,6 +25,12 @@ pipeline {
                 git branch: 'eks-pipeline', credentialsId: "${GIT_CRED_ID}", url: "${GIT_URL}"
             }
         }
+        stage('Install Node Dependencies') {
+    steps {
+        dir('bookmyshow-app') {
+            sh 'npm install'
+        }
+    }
         
         stage('Build Docker Image') {
             steps {
