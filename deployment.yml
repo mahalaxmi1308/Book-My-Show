@@ -15,8 +15,7 @@ spec:
       containers:
       - name: bookmyshow
         # మార్చాలి: ఇక్కడ మీ డాకర్ హబ్ యూజర్‌నేమ్ ఇవ్వాలి
-        image: your_docker_username/bookmyshow:latest 
-        ports:
+        image: 232723758111.dkr.ecr.ap-southeast-2.amazonaws.com/bms-ecr
         - containerPort: 8080
 ---
 apiVersion: v1
