@@ -64,5 +64,6 @@ pipeline {
                 // కుబెర్నెటీస్ లో డిప్లాయ్ చేయడం
                 sh "kubectl apply -f deployment.yml"
             }
-        } 
+        }
+    }
 }
