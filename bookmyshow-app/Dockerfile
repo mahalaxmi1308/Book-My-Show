@@ -1,11 +1,20 @@
-# 1. కోడ్‌ని బిల్డ్ చేయడానికి (Maven)
-FROM maven:3.8.5-openjdk-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package
+# Node.js base image vadukuntu Dockerfile create cheddam
+FROM node:23-alpine
 
-# 2. అప్లికేషన్‌ని రన్ చేయడానికి (Tomcat 10)
-FROM tomcat:10.1-jdk17
-COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
+# Container lo working directory set cheyali
+WORKDIR /app
+
+# Dependencies install cheyadaniki package.json files copy cheyali
+COPY package*.json ./
+
+# Node modules install cheyali
+RUN npm install
+
+# Migata source code motham copy cheyali
+COPY . .
+
+# App run ayye port (meeru k8s deployment lo 8080 vadaru kabatti 8080 ivvachu)
 EXPOSE 8080
-CMD ["catalina.sh", "run"]
+
+# Application start chese command
+CMD ["npm", "start"]
